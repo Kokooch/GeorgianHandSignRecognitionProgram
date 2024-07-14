@@ -15,7 +15,13 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
 # Dictionary for label mapping
-labels_dict = {0: 'A', 1: 'B', 2: 'L'}
+labels_dict = {
+    0: 'ა', 1: 'ბ', 2: 'გ', 3: 'დ', 4: 'ე', 5: 'ვ', 6: 'ზ',
+    7: 'თ', 8: 'ი', 9: 'კ', 10: 'ლ', 11: 'მ', 12: 'ნ', 13: 'ო',
+    14: 'პ', 15: 'ჟ', 16: 'რ', 17: 'ს', 18: 'ტ', 19: 'უ', 20: 'ფ',
+    21: 'ქ', 22: 'ღ', 23: 'ყ', 24: 'შ', 25: 'ჩ', 26: 'ც', 27: 'ძ',
+    28: 'წ', 29: 'ჭ', 30: 'ხ', 31: 'ჯ', 32: 'ჰ'
+}
 
 while True:
     data_aux = []
