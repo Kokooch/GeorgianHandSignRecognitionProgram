@@ -10,6 +10,24 @@ if os.path.exists('model.p'):
     print('Removed existing model.p')
 
 data_dict = pickle.load(open('./data.pickle', 'rb'))
+data = data_dict['data']
+labels = data_dict['labels']
+filenames = data_dict['filenames']
+
+# Inspect shapes and filenames
+for i, d in enumerate(data):
+    if len(d) != 42:
+        print(f"Shape of data[{i}]: {len(d)}, Filename: {filenames[i]}")
+
+# Convert to NumPy array
+data = np.asarray(data)
+labels = np.asarray(labels)
+
+print(f"Data shape: {data.shape}")
+print(f"Labels shape: {labels.shape}")
+
+
+data_dict = pickle.load(open('./data.pickle', 'rb'))
 data = np.asarray(data_dict['data'])
 labels = np.asarray(data_dict['labels'])
 

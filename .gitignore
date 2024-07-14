@@ -2,7 +2,8 @@
 venv/
 
 # Ignore the data directory
-data/
+data2/
+data3/
 
 #Ignore pickle
 *.pickle
