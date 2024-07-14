@@ -2,6 +2,7 @@ import pickle
 import cv2
 import mediapipe as mp
 import numpy as np
+from PIL import Image, ImageDraw, ImageFont
 
 # Load the trained model
 model_dict = pickle.load(open('./model.p', 'rb'))
@@ -22,6 +23,15 @@ labels_dict = {
     21: 'ქ', 22: 'ღ', 23: 'ყ', 24: 'შ', 25: 'ჩ', 26: 'ც', 27: 'ძ',
     28: 'წ', 29: 'ჭ', 30: 'ხ', 31: 'ჯ', 32: 'ჰ'
 }
+
+# Load a TTF font for rendering Unicode characters
+font_path = "./DejaVuSans.ttf"  # Path to DejaVu Sans font
+def put_text_with_pil(frame, text, position, font, color=(0, 0, 0)):
+    """Overlay text on an image using PIL for Unicode support."""
+    pil_image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+    draw = ImageDraw.Draw(pil_image)
+    draw.text(position, text, font=font, fill=color)
+    return cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
 
 while True:
     data_aux = []
@@ -68,7 +78,10 @@ while True:
         x2, y2 = int(max(x_) * W) - 10, int(max(y_) * H) - 10
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-        cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
+
+        # Draw the predicted character using PIL
+        font = ImageFont.truetype(font_path, 32)
+        frame = put_text_with_pil(frame, predicted_character, (x1, y1 - 40), font, color=(0, 0, 0))
 
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
