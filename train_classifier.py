@@ -26,7 +26,6 @@ labels = np.asarray(labels)
 print(f"Data shape: {data.shape}")
 print(f"Labels shape: {labels.shape}")
 
-
 data_dict = pickle.load(open('./data.pickle', 'rb'))
 data = np.asarray(data_dict['data'])
 labels = np.asarray(data_dict['labels'])

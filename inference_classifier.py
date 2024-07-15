@@ -26,6 +26,16 @@ labels_dict = {
 
 # Load a TTF font for rendering Unicode characters
 font_path = "./DejaVuSans.ttf"  # Path to DejaVu Sans font
+
+# Define landmark connections based on the MediaPipe hand model
+connections = [
+    (0, 1), (1, 2), (2, 3), (3, 4),   # Thumb
+    (0, 5), (5, 6), (6, 7), (7, 8),   # Index finger
+    (5, 9), (9, 10), (10, 11), (11, 12), # Middle finger
+    (9, 13), (13, 14), (14, 15), (15, 16), # Ring finger
+    (13, 17), (0, 17), (17, 18), (18, 19), (19, 20) # Pinky
+]
+
 def put_text_with_pil(frame, text, position, font, color=(0, 0, 0)):
     """Overlay text on an image using PIL for Unicode support."""
     pil_image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
@@ -64,13 +74,23 @@ while True:
             data_aux.append(x - min(x_))
             data_aux.append(y - min(y_))
 
+        # Draw landmarks and connections
+        for i in range(len(hand_landmarks.landmark)):
+            cx, cy = int(hand_landmarks.landmark[i].x * W), int(hand_landmarks.landmark[i].y * H)
+            cv2.circle(frame, (cx, cy), 5, (0, 255, 0), -1)  # Draw a green circle
+
+        # Draw connections
+        for connection in connections:
+            start_idx, end_idx = connection
+            start_point = (int(hand_landmarks.landmark[start_idx].x * W), int(hand_landmarks.landmark[start_idx].y * H))
+            end_point = (int(hand_landmarks.landmark[end_idx].x * W), int(hand_landmarks.landmark[end_idx].y * H))
+            cv2.line(frame, start_point, end_point, (0, 255, 0), 2)  # Draw a green line
+
         # Ensure the feature vector matches the training format
         data_aux = np.asarray(data_aux).reshape(1, -1)
 
-        # Make prediction
+        # Make prediction and get predicted character
         prediction = model.predict(data_aux)
-
-        # Get the predicted character
         predicted_character = labels_dict[int(prediction[0])]
 
         # Draw bounding box and predicted label
