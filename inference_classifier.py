@@ -77,14 +77,14 @@ while True:
         # Draw landmarks and connections
         for i in range(len(hand_landmarks.landmark)):
             cx, cy = int(hand_landmarks.landmark[i].x * W), int(hand_landmarks.landmark[i].y * H)
-            cv2.circle(frame, (cx, cy), 5, (0, 255, 0), -1)  # Draw a green circle
+            cv2.circle(frame, (cx, cy), 6, (255, 255, 255), -1)  # Draw a green circle
 
         # Draw connections
         for connection in connections:
             start_idx, end_idx = connection
             start_point = (int(hand_landmarks.landmark[start_idx].x * W), int(hand_landmarks.landmark[start_idx].y * H))
             end_point = (int(hand_landmarks.landmark[end_idx].x * W), int(hand_landmarks.landmark[end_idx].y * H))
-            cv2.line(frame, start_point, end_point, (0, 255, 0), 2)  # Draw a green line
+            cv2.line(frame, start_point, end_point, (0, 0, 255), 2)  # Draw a green line
 
         # Ensure the feature vector matches the training format
         data_aux = np.asarray(data_aux).reshape(1, -1)
